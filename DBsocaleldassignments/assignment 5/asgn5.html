@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balace from acno</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            console.log("Page loaded");
+            $('#acno').blur(() => {
+                console.log("Blur event occurred");
+                let input = { acno: $('#acno').val() }
+
+                let parameterstothefunction = {
+                    data: input,
+                    url: 'http://localhost:550/getbalance',
+                    type: 'get',
+                    datatype: 'json',
+                    success: function (datafromserver) {
+                        console.log("Data fetched successfully");
+                        console.log(datafromserver);
+                        if (datafromserver.status === true) {
+                            $('#bal').text(datafromserver.detail.bal);
+                            $('#msg').text("balance found");
+                        }
+                        else {
+                            $('#bal').val("");
+                            $('#msg').text("balance not found");
+                        }
+                    },
+                    error: function (errorfromserver) {
+                        console.log("some error occurred" + errorfromserver);
+                    }
+                }
+                $.ajax(parameterstothefunction);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <input type="number" id="acno" name="acno" placeholder="Account Number" />
+    <span id="bal">balance Appear
+        here</span><br>
+    <span id="msg">Message</span>
+</body>
+
+</html>
